@@ -20,7 +20,7 @@ export function parseAttrs(el) {
  */
 export function parseRefs(el) {
   const refs = {}
-  const els = el.querySelectorAll('[ref], [ref\\.dyn]')
+  const els = el.querySelectorAll(':scope > [ref], :scope > [ref\\.dyn], :scope :not([is]) [ref], :scope :not([is]) [ref\\.dyn]')
   for(let i = els.length; i--;) {
     const staticRef = els[i].getAttribute('ref')
     const dynRef = els[i].getAttribute('ref.dyn')
