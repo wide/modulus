@@ -135,6 +135,7 @@ modulus.component('foo-bar', class extends Component {
 - `refs` element's specific children (fetched using `[ref]` and `[ref.dyn]` attributes)
   - `[ref]` elements are computed on component initial load
   - `[ref.dyn]` elements are computed on each access
+  - `[ref.group]` elements are grouped in an array under the same key (`[ref=bar]` -> `this.refs.bar[0]`)
 
 ### Hooks
 

@@ -16,18 +16,49 @@ export function parseAttrs(el) {
 /**
  * Gather children with [ref] and [ref.dyn] attributes
  * @param {HTMLElement} el 
+ * @param {String} uid 
  * @return {Object<string, HTMLElement>}
  */
-export function parseRefs(el) {
+export function parseRefs(el, uid) {
+
   const refs = {}
-  const els = el.querySelectorAll(':scope > [ref], :scope > [ref\\.dyn], :scope :not([is]) [ref], :scope :not([is]) [ref\\.dyn]')
+  let els = []
+  try {
+    els = el.querySelectorAll(`:scope > [ref], :scope > [ref\\.dyn],:scope > [ref\\.group],
+                               :scope :not([is]) [ref], :scope :not([is]) [ref\\.dyn], :scope :not([is]) [ref\\.group]`)
+  }
+  // ie + edge legacy
+  catch(err) {
+    el.setAttribute('data-scope-uid', uid)
+    const scope = `[data-scope-uid="${uid}"]`
+    els = document.querySelectorAll(`${scope} > [ref], ${scope} > [ref\\.dyn], ${scope} > [ref\\.group],
+                                     ${scope} :not([is]) [ref], ${scope} :not([is]) [ref\\.dyn], ${scope} :not([is]) [ref\\.group]`)
+  }
+
   for(let i = els.length; i--;) {
-    const staticRef = els[i].getAttribute('ref')
-    const dynRef = els[i].getAttribute('ref.dyn')
-    const prop = camelize(staticRef || dynRef)
-    Object.defineProperty(refs, prop, staticRef
-        ? { value: els[i] }
-        : { get: () => el.querySelector(`[ref\\.dyn="${dynRef}"]`) })
+
+    // assign ref
+    const ref = els[i].getAttribute('ref')
+    if(ref && !refs[ref]) {
+      Object.defineProperty(refs, camelize(ref), { value: els[i] })
+    }
+
+    // assign dynamic ref
+    const refDyn = els[i].getAttribute('ref.dyn')
+    if(refDyn && !refs[refDyn]) {
+      Object.defineProperty(refs, camelize(refDyn), {
+        get: () => el.querySelector(`[ref\\.dyn="${refDyn}"]`)
+      })
+    }
+
+    // assign group ref
+    const refGroup = els[i].getAttribute('ref.group')
+    if(refGroup) {
+      if(!refs[refGroup]) {
+        Object.defineProperty(refs, camelize(refGroup), { value: [] })
+      }
+      refs[refGroup].push(els[i])
+    }
   }
   return refs
 }

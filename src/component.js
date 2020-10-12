@@ -53,7 +53,7 @@ export default class Component {
      * Element children with [ref] or [ref.dyn] attributes (camelcased)
      * @type {Object<string, HTMLElement>}
      */
-    this.refs = parseRefs(el)
+    this.refs = parseRefs(el, this.uid)
 
     /**
      * Logger instance
