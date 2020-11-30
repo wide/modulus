@@ -14,8 +14,14 @@ observe('[data-call]', {
       const [str, name, id, method] = el.dataset.call.match(/([a-zA-Z-]+)([#.].+)\.(.+)/)
       if(name && id && method) {
         const component = seek(name, id)
-        if(component) component[method]()
-        else console.error(`Unknown component "${str}"`)
+        if(component) {
+          const method = component[method]
+          const params = el.dataset['call.params']
+
+          if (params === '$el') method(el)
+          else if (params === '$event') method(e)
+          else method()
+        } else console.error(`Unknown component "${str}"`)
       }
       else console.error(`Invalid call string "${str}"`)
     })
