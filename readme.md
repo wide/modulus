@@ -106,6 +106,18 @@ will internally trigger:
 modulus.seek('modal', '#register').open()
 ```
 
+#### Parameters
+Use the `[data-call.params]` to pass some predefined values:
+
+| Value | Description |
+|---|---|---|---|
+| `$event` | `Event` object of the event listener method callback |
+| `$el` | Element object binded to the event |
+
+```html
+<button data-call="modal#register.open" data-call.params="$event">do something</button>
+```
+
 
 
 ## Component class
