@@ -1,6 +1,5 @@
 import observe from '@wide/dom-observer'
 import { seek } from './index'
-import { parseJSON } from './utils'
 
 const DEFAULT_TOGGLE_CLASS = '-active'
 
