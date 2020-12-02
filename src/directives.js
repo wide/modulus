@@ -7,6 +7,7 @@ const DEFAULT_TOGGLE_CLASS = '-active'
 /**
  * Run component's method from HTML
  * Ex: [data-call="modal#register.open"] -> modulus.seek('modal', '#register').open()
+ * Ex with params: [data-call="modal#register.open"] [data-call.params="$el"] -> modulus.seek('modal', '#register').open(el)
  */
 observe('[data-call]', {
   bind(el) {
@@ -15,12 +16,11 @@ observe('[data-call]', {
       if(name && id && method) {
         const component = seek(name, id)
         if(component) {
-          const method = component[method]
           const params = el.dataset['call.params']
 
-          if (params === '$el') method(el)
-          else if (params === '$event') method(e)
-          else method()
+          if (params === '$el') component[method](el)
+          else if (params === '$event') component[method](e)
+          else component[method]()
         } else console.error(`Unknown component "${str}"`)
       }
       else console.error(`Invalid call string "${str}"`)
