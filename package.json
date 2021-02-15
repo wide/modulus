@@ -1,6 +1,6 @@
 {
   "name": "@wide/modulus",
-  "version": "2.0.2",
+  "version": "2.0.5",
   "description": "Robust Web Component interface",
   "license": "MIT",
   "author": "Aymeric Assier (https://github.com/myeti)",
@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "@webcomponents/custom-elements": "^1.2.4",
-    "@wide/dom-observer": "^2.0.0",
+    "@wide/dom-observer": "^2.0.1",
     "@wide/emitter": "^2.0.0"
   },
   "devDependencies": {
