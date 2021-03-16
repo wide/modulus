@@ -17,10 +17,10 @@ let uids = 0
  */
 export default class Component {
 
-  
+
   /**
    * New Component
-   * @param {HTMLElement} el 
+   * @param {HTMLElement} el
    * @param {String} name
    */
   constructor(el, name = '') {
@@ -95,7 +95,7 @@ export default class Component {
 
   /**
    * Alias of querySelectorAll()
-   * @param {String} selector 
+   * @param {String} selector
    * @return {Array<HTMLElement>}
    */
   children(selector) {
@@ -105,19 +105,19 @@ export default class Component {
 
   /**
    * Listen to global event bus
-   * @param {String} event 
-   * @param {Function} fn 
+   * @param {String} event
+   * @param {Function} fn
    */
   on(event, fn) {
     const ref = emitter.on(event, fn)
-    this.__meta.listeners.push({ event, ref })
+    this.__meta.listeners.push({ event, ref: ref.ref, opts: ref.opts, keyRef: fn })
   }
 
 
   /**
    * Emit to global event bus
-   * @param {String} event 
-   * @param  {...any} args 
+   * @param {String} event
+   * @param  {...any} args
    */
   emit(event, ...args) {
     emitter.emit(event, ...args)
@@ -126,11 +126,15 @@ export default class Component {
 
   /**
    * Remove from global event bus
-   * @param {String} event 
-   * @param {Function} ref 
+   * @param {String} event
+   * @param {Function} ref
    */
   off(event, ref) {
-    emitter.off(event, ref)
+    const index = this.__meta.listeners.findIndex(item => item.event === event && item.keyRef === ref)
+    if (index > -1) {
+      emitter.off(event, this.__meta.listeners[index].ref, this.__meta.listeners[index].opts)
+      this.__meta.listeners.splice(index, 1)
+    }
   }
 
 
@@ -141,17 +145,18 @@ export default class Component {
 
     // clear event listeners
     for(let i = this.__meta.listeners.length; i--;) {
-      const { event, ref } = this.__meta.listeners[i]
-      emitter.off(event, ref)
+      const { event, ref, opts } = this.__meta.listeners[i]
+      emitter.off(event, ref, opts)
+      this.__meta.listeners.splice(i, 1)
     }
   }
 
 
   /**
    * Instanciate and run component
-   * @param {HTMLElement} el 
-   * @param {String} name 
-   * @param  {...any} args 
+   * @param {HTMLElement} el
+   * @param {String} name
+   * @param  {...any} args
    * @return {this}
    */
   static create(el, name, ...args) {
