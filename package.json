@@ -1,6 +1,6 @@
 {
   "name": "@wide/modulus",
-  "version": "2.0.5",
+  "version": "2.0.6",
   "description": "Robust Web Component interface",
   "license": "MIT",
   "author": "Aymeric Assier (https://github.com/myeti)",
@@ -9,8 +9,8 @@
     "Julien Martins Da Costa (https://github.com/jdacosta)"
   ],
   "repository": {
-    "type" : "git",
-    "url" : "https://github.com/wide/modulus.git"
+    "type": "git",
+    "url": "https://github.com/wide/modulus.git"
   },
   "main": "lib/index.js",
   "engines": {
