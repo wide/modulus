@@ -1,4 +1,5 @@
 import observe, { seek as _seek } from '@wide/dom-observer'
+import viewport from '@wide/viewport'
 import { bind, unbind } from './hooks'
 import './directives'
 
@@ -54,6 +55,38 @@ export function registerComponent(name, Klass) {
 export function registerComponents(collection) {
   for(let name in collection) {
     registerComponent(name, collection[name])
+  }
+}
+
+
+/**
+ * Register one dynamic component
+ * @param {String} name 
+ * @param {Function} Klass 
+ */
+ export function registerDynamicComponent(name, Klass) {
+  console.debug(`# ask for registering dynamic component [is="${name}.dyn"]`)
+
+  observe(`[is.dyn="${name}"]`, {
+    bind: el => viewport(el, {
+      enter() {
+        console.debug(`# register component [is="${name}.dyn"]`)
+        bind(el, name, Klass)
+      },
+      once: true
+    }),
+    unbind: el => unbind(el)
+  })
+}
+
+
+/**
+ * Register many dynamic components
+ * @param {Object<string, Component>} collection
+ */
+ export function registerDynamicComponents(name, Klass) {
+  for(let name in collection) {
+    registerDynamicComponent(name, collection[name])
   }
 }
 
@@ -124,6 +157,7 @@ export function seek(name, selector) {
 export function seekAll(name, selector) {
   return [
     ..._seek(`[is="${name}"]`), // regular components
+    ..._seek(`[is="${name}.dyn"]`), // dynamic components
     ...Array.from(document.querySelectorAll(name)) // web components
   ].filter(el => !selector || el.matches(selector))
    .map(el => el.__component)
@@ -138,6 +172,8 @@ modulus.register = register
 modulus.registerMany = registerMany
 modulus.component = registerComponent
 modulus.components = registerComponents
+modulus.dynamicComponent = registerDynamicComponent
+modulus.dynamicComponents = registerDynamicComponents
 modulus.webComponent = registerWebComponent
 modulus.webComponents = registerWebComponents
 modulus.imports = registerImports
