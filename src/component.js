@@ -107,9 +107,10 @@ export default class Component {
    * Listen to global event bus
    * @param {String} event
    * @param {Function} fn
+   * @param {Object} [params={}]
    */
-  on(event, fn) {
-    const ref = emitter.on(event, fn)
+  on(event, fn, params = {}) {
+    const ref = emitter.on(event, fn, params)
     this.__meta.listeners.push({ event, ref: ref.ref, opts: ref.opts, keyRef: fn })
   }
 
