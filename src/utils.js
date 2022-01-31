@@ -73,6 +73,6 @@ export function parseRefs(el, uid) {
  * @param {String} str 
  * @return {String}
  */
-export function camelize(str) {
+ export function camelize(str) {
   return str.replace(/[\s-]+(\w)/g, (m, c) => c.toUpperCase())
 }
