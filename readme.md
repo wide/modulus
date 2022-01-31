@@ -133,7 +133,7 @@ modulus.component('modal', class extends Component {
    *
    * @params {HTMLElement} el
    * @params {Event} e
-   * @params {Object} [data]
+   * @params {Object|null} [data]
    */
   open({ el, e, data }) {
     // el: <button ...>
