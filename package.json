@@ -1,6 +1,6 @@
 {
   "name": "@wide/modulus",
-  "version": "2.0.6",
+  "version": "2.1.1",
   "description": "Robust Web Component interface",
   "license": "MIT",
   "author": "Aymeric Assier (https://github.com/myeti)",
@@ -14,21 +14,22 @@
   },
   "main": "lib/index.js",
   "engines": {
-    "node": ">=10.13.0"
+    "node": ">=12.18.0"
   },
   "scripts": {
-    "build": "babel src/ -d lib/ --presets babel-preset-es2015 --plugins transform-custom-element-classes",
+    "build": "babel src/ -d lib/ --presets=@babel/preset-env --plugins=@babel/plugin-transform-classes",
     "prepare": "rimraf lib/ && npm run build"
   },
   "dependencies": {
-    "@webcomponents/custom-elements": "^1.2.4",
-    "@wide/dom-observer": "^2.0.1",
-    "@wide/emitter": "^2.0.0"
+    "@webcomponents/custom-elements": "^1.4.3",
+    "@wide/dom-observer": "^2.1.0",
+    "@wide/emitter": "^2.1.0"
   },
   "devDependencies": {
-    "babel-cli": "6.26.0",
-    "babel-plugin-transform-custom-element-classes": "^0.1.0",
-    "babel-preset-es2015": "6.24.1",
-    "rimraf": "^3.0.0"
+    "@babel/cli": "^7.14.3",
+    "@babel/core": "^7.14.3",
+    "@babel/plugin-transform-classes": "^7.14.4",
+    "@babel/preset-env": "^7.14.4",
+    "rimraf": "^3.0.2"
   }
 }
