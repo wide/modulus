@@ -103,22 +103,44 @@ Use the `[data-call]` helper with a formatted value `name#id.method`:
 
 will internally trigger:
 ```js
-modulus.seek('modal', '#register').open()
+modulus.seek('modal', '#register').open({ el, e, data })
 ```
-
-#### Parameters
-Use the `[data-call.params]` to pass some predefined values:
 
 | Value | Description |
-|---|---|---|---|
-| `$event` | `Event` object of the event listener method callback |
-| `$el` | Element object binded to the event |
+|---|---|
+| `el` | HTMLElement object binded to the event |
+| `e` | `Event` object of the event listener method callback |
+| `data` | Optional parameters defined in `[data-call.params]` |
+
+#### Parameters
+Use the `[data-call.params]` to pass custom values:
 
 ```html
-<button data-call="modal#register.open" data-call.params="$event">do something</button>
+<button data-call="modal#register.open" data-call.params='[{ "myAttr": "myValue" }]'>do something</button>
 ```
 
+> ⚠️ Note: `data-call.params` is waiting a JSON format only
 
+Exmple with the previous HTML code:
+```js
+modulus.component('modal', class extends Component {
+  run() {
+    // ...
+  }
+
+  /**
+   * Open modal and do some stuff
+   *
+   * @params {HTMLElement} el
+   * @params {Event} e
+   * @params {Object|null} [data]
+   */
+  open({ el, e, data }) {
+    // el: <button ...>
+    // e: Event{ ... }
+    // data: { ... } | null
+  }
+```
 
 ## Component class
 
