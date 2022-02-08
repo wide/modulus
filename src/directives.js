@@ -1,4 +1,5 @@
 import observe from '@wide/dom-observer'
+import { logger } from './logger'
 import { seek } from './index'
 import { parseDataCallParams } from './utils'
 
@@ -31,9 +32,9 @@ observe('[data-call]', {
           }
 
           component[method]({ el, e, data })
-        } else console.error(`Unknown component "${str}"`)
+        } else logger.error(`Unknown component "${str}"`)
       }
-      else console.error(`Invalid call string "${str}"`)
+      else logger.error(`Invalid call string "${str}"`)
     })
   }
 })
