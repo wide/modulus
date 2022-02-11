@@ -11,8 +11,11 @@ export { LOG_LEVELS } from './logger'
  * @type {Object}
  */
 const DEFAULT_CONFIG = {
-  silent: false,
-  logLevel: LOG_LEVELS.DEBUG
+  production: false,
+  log: {
+    enabled: true,
+    level: null
+  }
 }
 
 
@@ -151,7 +154,17 @@ export function seekAll(name, selector) {
  */
 export function setConfig(values = {}) {
   const config = Object.assign({}, DEFAULT_CONFIG, values)
-  Logger.LEVEL = config.silent ? LOG_LEVELS.WARN : config.logLevel
+  const { enabled, level } = config.log
+
+  if (enabled) {
+    if (level) {
+      Logger.LEVEL = Object.values(LOG_LEVELS).includes(level) ? level : LOG_LEVELS.DEBUG
+    } else {
+      Logger.LEVEL = config.production ? LOG_LEVELS.WARN : LOG_LEVELS.DEBUG
+    }
+  } else {
+    Logger.LEVEL = LOG_LEVELS.NONE
+  }
 }
 
 

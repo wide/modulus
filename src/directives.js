@@ -1,7 +1,6 @@
 import observe from '@wide/dom-observer'
 import { logger } from './logger'
 import { seek } from './index'
-import { parseDataCallParams } from './utils'
 
 const DEFAULT_TOGGLE_CLASS = '-active'
 
@@ -27,7 +26,7 @@ observe('[data-call]', {
             try {
               data = JSON.parse(params)?.[0]
             } catch(e) {
-              console.error('Invalid JSON format in `data-call.params`.', e)
+              logger.error('Invalid JSON format in `data-call.params`.', e)
             }
           }
 
