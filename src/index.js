@@ -1,6 +1,22 @@
 import observe, { seek as _seek } from '@wide/dom-observer'
+import { LOG_LEVELS, Logger, logger } from './logger'
 import { bind, unbind } from './hooks'
 import './directives'
+
+export { LOG_LEVELS } from './logger'
+
+
+/**
+ * Default internal config values
+ * @type {Object}
+ */
+const DEFAULT_CONFIG = {
+  production: false,
+  log: {
+    enabled: true,
+    level: null
+  }
+}
 
 
 /**
@@ -39,7 +55,7 @@ export function registerMany(many) {
  * @param {Function} Klass 
  */
 export function registerComponent(name, Klass) {
-  console.debug(`# register component [is=${name}]`)
+  logger(`# register component [is=${name}]`)
   observe(`[is="${name}"]`, {
     bind: el => bind(el, name, Klass),
     unbind: el => unbind(el)
@@ -64,7 +80,7 @@ export function registerComponents(collection) {
  * @param {Function} Klass 
  */
 export function registerWebComponent(name, Klass) {
-  console.debug(`# register web component <${name}>`)
+  logger(`# register web component <${name}>`)
   try {
     window.customElements.define(name, class extends HTMLElement {
       connectedCallback() {
@@ -76,7 +92,7 @@ export function registerWebComponent(name, Klass) {
     })
   }
   catch(err) {
-    console.error(err)
+    logger.error(err)
   }
 }
 
@@ -132,6 +148,27 @@ export function seekAll(name, selector) {
 
 
 /**
+ * Set internal config
+ * - assign log level
+ * @param {Object} values 
+ */
+export function setConfig(values = {}) {
+  const config = Object.assign({}, DEFAULT_CONFIG, values)
+  const { enabled, level } = config.log
+
+  if (enabled) {
+    if (level) {
+      Logger.LEVEL = Object.values(LOG_LEVELS).includes(level) ? level : LOG_LEVELS.DEBUG
+    } else {
+      Logger.LEVEL = config.production ? LOG_LEVELS.WARN : LOG_LEVELS.DEBUG
+    }
+  } else {
+    Logger.LEVEL = LOG_LEVELS.NONE
+  }
+}
+
+
+/**
  * Extend modulus instance
  */
 modulus.register = register
@@ -143,6 +180,7 @@ modulus.webComponents = registerWebComponents
 modulus.imports = registerImports
 modulus.seek = seek
 modulus.seekAll = seekAll
+modulus.config = setConfig
 
 
 /**

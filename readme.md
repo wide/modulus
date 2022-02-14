@@ -193,10 +193,53 @@ modulus.component('foo-bar', class extends Component {
 Every event listeners created using `this.on()` are automatically `off()`ed on component destruction.
 
 
+## Config
+
+### Log level
+
+To keep only `warn` and `error` logs (for production usage), set `production` to `true`:
+```js
+import modulus from '@wide/modulus'
+
+modulus.config({ production: true })
+```
+
+Or manually assign a log level:
+```js
+import modulus, { LOG_LEVELS } from '@wide/modulus'
+
+modulus.config({
+  log: {
+    level: LOG_LEVELS.INFO // DEBUG (default), INFO, WARN, ERROR, NONE
+  }
+})
+```
+
+> ⚠️ Note: assign a log level will override the `production` setting.
+
+To disable logs, set `enabled` to `false`:
+```js
+import modulus from '@wide/modulus'
+
+modulus.config({
+  log: {
+    enabled: false
+  }
+})
+```
+
+The default config is setted to show all kind of logs.
+
+
 ## Authors
 
 - **Aymeric Assier** - [github.com/myeti](https://github.com/myeti)
 - **Julien Martins Da Costa** - [github.com/jdacosta](https://github.com/jdacosta)
+
+### Contributors
+
+- **Sébastien Robillard** - [github.com/robiseb](https://github.com/robiseb)
+- **Kévin Poccard Soudard** - [github.com/kevpoccs](https://github.com/kevpoccs)
 
 
 ## License
