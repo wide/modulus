@@ -103,22 +103,44 @@ Use the `[data-call]` helper with a formatted value `name#id.method`:
 
 will internally trigger:
 ```js
-modulus.seek('modal', '#register').open()
+modulus.seek('modal', '#register').open({ el, e, data })
 ```
-
-#### Parameters
-Use the `[data-call.params]` to pass some predefined values:
 
 | Value | Description |
-|---|---|---|---|
-| `$event` | `Event` object of the event listener method callback |
-| `$el` | Element object binded to the event |
+|---|---|
+| `el` | HTMLElement object binded to the event |
+| `e` | `Event` object of the event listener method callback |
+| `data` | Optional parameters defined in `[data-call.params]` |
+
+#### Parameters
+Use the `[data-call.params]` to pass custom values:
 
 ```html
-<button data-call="modal#register.open" data-call.params="$event">do something</button>
+<button data-call="modal#register.open" data-call.params='[{ "myAttr": "myValue" }]'>do something</button>
 ```
 
+> ⚠️ Note: `data-call.params` is waiting a JSON format only
 
+Exmple with the previous HTML code:
+```js
+modulus.component('modal', class extends Component {
+  run() {
+    // ...
+  }
+
+  /**
+   * Open modal and do some stuff
+   *
+   * @params {HTMLElement} el
+   * @params {Event} e
+   * @params {Object|null} [data]
+   */
+  open({ el, e, data }) {
+    // el: <button ...>
+    // e: Event{ ... }
+    // data: { ... } | null
+  }
+```
 
 ## Component class
 
@@ -171,10 +193,53 @@ modulus.component('foo-bar', class extends Component {
 Every event listeners created using `this.on()` are automatically `off()`ed on component destruction.
 
 
+## Config
+
+### Log level
+
+To keep only `warn` and `error` logs (for production usage), set `production` to `true`:
+```js
+import modulus from '@wide/modulus'
+
+modulus.config({ production: true })
+```
+
+Or manually assign a log level:
+```js
+import modulus, { LOG_LEVELS } from '@wide/modulus'
+
+modulus.config({
+  log: {
+    level: LOG_LEVELS.INFO // DEBUG (default), INFO, WARN, ERROR, NONE
+  }
+})
+```
+
+> ⚠️ Note: assign a log level will override the `production` setting.
+
+To disable logs, set `enabled` to `false`:
+```js
+import modulus from '@wide/modulus'
+
+modulus.config({
+  log: {
+    enabled: false
+  }
+})
+```
+
+The default config is setted to show all kind of logs.
+
+
 ## Authors
 
 - **Aymeric Assier** - [github.com/myeti](https://github.com/myeti)
 - **Julien Martins Da Costa** - [github.com/jdacosta](https://github.com/jdacosta)
+
+### Contributors
+
+- **Sébastien Robillard** - [github.com/robiseb](https://github.com/robiseb)
+- **Kévin Poccard Soudard** - [github.com/kevpoccs](https://github.com/kevpoccs)
 
 
 ## License

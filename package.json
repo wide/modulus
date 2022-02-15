@@ -1,12 +1,14 @@
 {
   "name": "@wide/modulus",
-  "version": "2.1.2",
+  "version": "2.2.0",
   "description": "Robust Web Component interface",
   "license": "MIT",
   "author": "Aymeric Assier (https://github.com/myeti)",
   "contributors": [
     "Aymeric Assier (https://github.com/myeti)",
-    "Julien Martins Da Costa (https://github.com/jdacosta)"
+    "Julien Martins Da Costa (https://github.com/jdacosta)",
+    "Sébastien Robillard (https://github.com/robiseb)",
+    "Kévin Poccard Soudard (https://github.com/kevpoccs)"
   ],
   "repository": {
     "type": "git",
