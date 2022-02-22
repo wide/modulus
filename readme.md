@@ -142,7 +142,9 @@ modulus.component('modal', class extends Component {
   }
 ```
 
-> ⚠️ **DEPRECATED:** To ensure compatibility with the old `$event` and `$el` parameters, it still possible to use them. For this, consult the [old documentation](https://github.com/wide/modulus/tree/2.1.2#parameters).
+**Deprecated method:** To ensure compatibility with the old `$event` and `$el` parameters (used by Modulus below v2.2.0), it still possible to use them. For this, consult the [old documentation](https://github.com/wide/modulus/tree/2.1.2#parameters). 
+
+> ⚠️ Note: Keep in mind that this method should not be used with new projects. It can be removed at any time on the next release. 
 
 ## Component class
 
