@@ -142,6 +142,8 @@ modulus.component('modal', class extends Component {
   }
 ```
 
+> ⚠️ **DEPRECATED:** To ensure compatibility with the old `$event` and `$el` parameters, it still possible to use them. For this, consult the [old documentation](https://github.com/wide/modulus/tree/2.1.2#parameters).
+
 ## Component class
 
 The `Component` class offers shortcuts for accessing element or sending events to other components.
