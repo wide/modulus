@@ -34,6 +34,7 @@ observe('[data-call]', {
 
             component[method]({ el, e, data })
           }
+          else component[method]()
         } else logger.error(`Unknown component "${str}"`)
       }
       else logger.error(`Invalid call string "${str}"`)
