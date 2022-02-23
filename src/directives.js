@@ -20,17 +20,21 @@ observe('[data-call]', {
         const component = seek(name, id)
         if(component) {
           const params = el.dataset['call.params']
-          let data = null
-          
-          if (params) {
+
+          if (params === '$el') component[method](el)
+          else if (params === '$event') component[method](e)
+          else if (params) {
+            let data = null
+
             try {
               data = JSON.parse(params)?.[0]
             } catch(e) {
               logger.error('Invalid JSON format in `data-call.params`.', e)
             }
-          }
 
-          component[method]({ el, e, data })
+            component[method]({ el, e, data })
+          }
+          else component[method]()
         } else logger.error(`Unknown component "${str}"`)
       }
       else logger.error(`Invalid call string "${str}"`)
