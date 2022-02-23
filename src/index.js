@@ -1,6 +1,7 @@
 import observe, { seek as _seek } from '@wide/dom-observer'
-import { LOG_LEVELS, Logger, logger } from './logger'
+import Logger, { LOG_LEVELS, logger } from './logger'
 import { bind, unbind } from './hooks'
+import { mergeDeep } from './utils'
 import './directives'
 
 export { LOG_LEVELS } from './logger'
@@ -153,7 +154,7 @@ export function seekAll(name, selector) {
  * @param {Object} values 
  */
 export function setConfig(values = {}) {
-  const config = Object.assign({}, DEFAULT_CONFIG, values)
+  const config = mergeDeep(DEFAULT_CONFIG, values)
   const { enabled, level } = config.log
 
   if (enabled) {
