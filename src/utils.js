@@ -35,27 +35,26 @@ export function parseRefs(el, uid) {
                                      ${scope} :not([is]) [ref], ${scope} :not([is]) [ref\\.dyn], ${scope} :not([is]) [ref\\.group]`)
   }
 
-  for(let i = els.length; i--;) {
-
+  for(let i = 0; i < els.length; i++) {
     // assign ref
-    const ref = els[i].getAttribute('ref')
+    const ref = camelize(els[i].getAttribute('ref'))
     if(ref && !refs[ref]) {
-      Object.defineProperty(refs, camelize(ref), { value: els[i] })
+      Object.defineProperty(refs, ref, { value: els[i] })
     }
 
     // assign dynamic ref
-    const refDyn = els[i].getAttribute('ref.dyn')
+    const refDyn = camelize(els[i].getAttribute('ref.dyn'))
     if(refDyn && !refs[refDyn]) {
-      Object.defineProperty(refs, camelize(refDyn), {
+      Object.defineProperty(refs, refDyn, {
         get: () => el.querySelector(`[ref\\.dyn="${refDyn}"]`)
       })
     }
 
     // assign group ref
-    const refGroup = els[i].getAttribute('ref.group')
+    const refGroup = camelize(els[i].getAttribute('ref.group'))
     if(refGroup) {
       if(!refs[refGroup]) {
-        Object.defineProperty(refs, camelize(refGroup), { value: [] })
+        Object.defineProperty(refs, refGroup, { value: [] })
       }
       refs[refGroup].push(els[i])
     }
@@ -73,8 +72,10 @@ export function parseRefs(el, uid) {
  * @param {String} str 
  * @return {String}
  */
- export function camelize(str) {
-  return str.replace(/[\s-]+(\w)/g, (m, c) => c.toUpperCase())
+export function camelize(str) {
+  return str
+    ? str.replace(/[\s-]+(\w)/g, (m, c) => c.toUpperCase())
+    : str
 }
 
 
