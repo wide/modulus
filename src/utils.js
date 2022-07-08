@@ -1,9 +1,9 @@
 /**
  * Parse element attributes
- * @param {HTMLElement} el 
+ * @param {HTMLElement} el
  * @return {Object<string, string>}
  */
-export function parseAttrs(el) {
+ export function parseAttrs(el) {
   const attrs = {}
   for(let i = el.attributes.length; i--;) {
     const { name, value } = el.attributes[i]
@@ -15,8 +15,8 @@ export function parseAttrs(el) {
 
 /**
  * Gather children with [ref] and [ref.dyn] attributes
- * @param {HTMLElement} el 
- * @param {String} uid 
+ * @param {HTMLElement} el
+ * @param {String} uid
  * @return {Object<string, HTMLElement>}
  */
 export function parseRefs(el, uid) {
@@ -37,26 +37,26 @@ export function parseRefs(el, uid) {
 
   for(let i = 0; i < els.length; i++) {
     // assign ref
-    const ref = camelize(els[i].getAttribute('ref'))
-    if(ref && !refs[ref]) {
-      Object.defineProperty(refs, ref, { value: els[i] })
+    const ref = els[i].getAttribute('ref')
+    if(ref && !refs[camelize(ref)]) {
+      Object.defineProperty(refs, camelize(ref), { value: els[i] })
     }
 
     // assign dynamic ref
-    const refDyn = camelize(els[i].getAttribute('ref.dyn'))
-    if(refDyn && !refs[refDyn]) {
-      Object.defineProperty(refs, refDyn, {
+    const refDyn = els[i].getAttribute('ref.dyn')
+    if(refDyn && !refs[camelize(refDyn)]) {
+      Object.defineProperty(refs, camelize(refDyn), {
         get: () => el.querySelector(`[ref\\.dyn="${refDyn}"]`)
       })
     }
 
     // assign group ref
-    const refGroup = camelize(els[i].getAttribute('ref.group'))
+    const refGroup = els[i].getAttribute('ref.group')
     if(refGroup) {
-      if(!refs[refGroup]) {
-        Object.defineProperty(refs, refGroup, { value: [] })
+      if(!refs[camelize(refGroup)]) {
+        Object.defineProperty(refs, camelize(refGroup), { value: [] })
       }
-      refs[refGroup].push(els[i])
+      refs[camelize(refGroup)].push(els[i])
     }
   }
   return refs
@@ -66,16 +66,14 @@ export function parseRefs(el, uid) {
 /**
  * Camelize string, for parseRefs() purpose only
  * - foo bar        ->  fooBar
- * - foo-bar        ->  fooBar  
+ * - foo-bar        ->  fooBar
  * - foo-bar baz    ->  fooBarBaz
  * - foo--bar  baz  ->  fooBarBaz
- * @param {String} str 
+ * @param {String} str
  * @return {String}
  */
-export function camelize(str) {
-  return str
-    ? str.replace(/[\s-]+(\w)/g, (m, c) => c.toUpperCase())
-    : str
+ export function camelize(str) {
+  return str.replace(/[\s-]+(\w)/g, (m, c) => c.toUpperCase())
 }
 
 
